@@ -1,15 +1,18 @@
-# ticket_factory.py
-
 from ticket import Ticket
 
-class TicketAdministrativoFactory:
-    def criar_ticket(self, titulo, descricao, solicitante, grupo, prioridade):
-        return Ticket(titulo, descricao, "Administrativo", solicitante, grupo, prioridade)
 
-class TicketManutencaoFactory:
+class TicketFactory:
     def criar_ticket(self, titulo, descricao, solicitante, grupo, prioridade):
-        return Ticket(titulo, descricao, "Manutenção", solicitante, grupo, prioridade)
+        return Ticket(titulo, descricao, solicitante, grupo, prioridade)
 
-class TicketTItiFactory:
-    def criar_ticket(self, titulo, descricao, solicitante, grupo, prioridade):
-        return Ticket(titulo, descricao, "TI", solicitante, grupo, prioridade)
+
+class TicketAdministrativoFactory(TicketFactory):
+    tipo = "Administrativo"
+
+
+class TicketManutencaoFactory(TicketFactory):
+    tipo = "Manutenção"
+
+
+class TicketTItiFactory(TicketFactory):
+    tipo = "TI"

@@ -1,50 +1,31 @@
-# ticket_handler.py
-
-from abc import ABC, abstractmethod
-from ticket import Ticket
-
-class Handler(ABC):
+class Handler:
     def __init__(self):
         self.proximo = None
 
     def set_proximo(self, handler):
         self.proximo = handler
 
-    @abstractmethod
     def tratar(self, ticket):
-        pass
-
-
-class SuporteAdministrativo:
-    def set_proximo(self, proximo):
-        self.proximo = proximo
-
-    def tratar(self, ticket):
-        if ticket.grupo == "Administrativo":
-            print(f"Ticket {ticket.numero} tratado pelo Suporte Administrativo.")
+        if self.pode_tratar(ticket):
+            print(f"Ticket {ticket.numero} tratado pelo Suporte {ticket.grupo}.")
             ticket.status = "Em Processo"
         elif self.proximo:
             self.proximo.tratar(ticket)
 
-class SuporteManutencao:
-    def set_proximo(self, proximo):
-        self.proximo = proximo
+    def pode_tratar(self, ticket):
+        return False
 
-    def tratar(self, ticket):
-        if ticket.grupo == "Manutenção":
-            print(f"Ticket {ticket.numero} tratado pelo Suporte Manutenção.")
-            ticket.status = "Em Processo"
-        elif self.proximo:
-            self.proximo.tratar(ticket)
 
-class SuporteTI:
-    def set_proximo(self, proximo):
-        self.proximo = proximo
+class SuporteAdministrativo(Handler):
+    def pode_tratar(self, ticket):
+        return ticket.grupo == "Administrativo"
 
-    def tratar(self, ticket):
-        if ticket.grupo == "TI":
-            print(f"Ticket {ticket.numero} tratado pelo Suporte TI.")
-            ticket.status = "Em Processo"
-        elif self.proximo:
-            self.proximo.tratar(ticket)
 
+class SuporteManutencao(Handler):
+    def pode_tratar(self, ticket):
+        return ticket.grupo == "Manutenção"
+
+
+class SuporteTI(Handler):
+    def pode_tratar(self, ticket):
+        return ticket.grupo == "TI"

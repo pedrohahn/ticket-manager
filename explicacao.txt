@@ -1,0 +1,61 @@
+Chain of Responsibility (CoR)
+O padrão Chain of Responsibility permite que vários objetos tratem uma solicitação, mas sem que o remetente da solicitação precise saber qual objeto irá tratá-la. A responsabilidade por tratar a solicitação é passada ao longo de uma cadeia de objetos até que um deles possa manipulá-la.
+
+No seu código:
+
+Handler (classe base): Representa a base de uma cadeia de objetos. Ela possui um atributo proximo para apontar para o próximo handler na cadeia. A função tratar verifica se o handler atual pode tratar o ticket (pode_tratar). Caso não possa, ela passa a responsabilidade para o próximo handler, se existir.
+
+SuporteAdministrativo, SuporteManutencao, SuporteTI (subclasses): São classes específicas que herdam de Handler. Cada uma define sua própria lógica de como tratar os tickets de um grupo específico (Administrativo, Manutenção, TI), substituindo o método pode_tratar.
+
+Como funciona:
+O ticket é recebido pelo primeiro handler da cadeia. Se o handler atual pode tratar o ticket, ele o faz (atualiza o status para "Em Processo").
+Se o handler não puder tratar o ticket, ele passa a responsabilidade para o próximo handler na cadeia (se houver).
+A cadeia segue até que o ticket seja tratado ou que não exista mais handlers para passar a solicitação.
+Exemplo no código:
+
+Se um ticket é de grupo "TI", o SuporteTI será o primeiro a verificar se pode tratar. Se não puder (por algum motivo), o ticket será passado para o próximo handler.
+Factory Method
+O padrão Factory Method define um método para criar objetos, mas permite que as subclasses alterem o tipo de objeto que será instanciado. Isso encapsula a lógica de criação de objetos e torna o código mais flexível e escalável.
+
+No seu código:
+
+TicketFactory (classe base): Define o método criar_ticket, que é responsável pela criação dos tickets.
+TicketAdministrativoFactory, TicketManutencaoFactory, TicketTItiFactory (subclasses): Cada uma dessas classes fornece uma especialização de TicketFactory, implementando a criação de tickets específicos para diferentes áreas, como Administrativo, Manutenção e TI.
+Como funciona:
+Cada fábrica sabe como criar tickets para grupos específicos. Por exemplo, TicketAdministrativoFactory cria tickets para o grupo administrativo.
+As fábricas são instanciadas na classe SistemaTickets para criar tickets de forma específica, dependendo da escolha do grupo (Administrativo, Manutenção ou TI).
+Exemplo no código:
+
+Se o usuário escolher o grupo "TI", a fábrica TicketTItiFactory será usada para criar o ticket.
+Documento Explicativo - Aplicação de Chain of Responsibility e Factory Method
+Padrão Chain of Responsibility (CoR)
+O padrão Chain of Responsibility permite que uma solicitação (neste caso, um ticket) seja tratada por uma série de objetos sem que o remetente saiba qual objeto irá tratar. Cada objeto na cadeia decide se pode tratar a solicitação ou se passa a responsabilidade para o próximo objeto. Esse padrão é útil quando temos uma sequência de passos lógicos que precisam ser realizados, mas cada passo pode ser realizado por diferentes entidades ou de maneira diferente, dependendo do contexto.
+
+Na nossa implementação:
+
+Temos uma cadeia de handlers: SuporteAdministrativo, SuporteManutencao e SuporteTI, onde cada handler é responsável por um tipo específico de ticket.
+Quando um ticket chega, ele percorre a cadeia até encontrar um handler que possa tratá-lo (baseado no grupo do ticket).
+Caso nenhum handler consiga tratar, o ticket passa para o próximo handler na cadeia.
+Esse design permite adicionar facilmente novos tipos de suporte (handlers) no futuro, sem a necessidade de modificar a lógica de outros componentes. Isso torna o código mais flexível e fácil de manter.
+
+Padrão Factory Method
+O padrão Factory Method permite que as subclasses decidam qual tipo de objeto será criado, proporcionando flexibilidade e desacoplamento entre a criação e o uso de objetos. Ele define um método em uma classe base para criar objetos, mas permite que as subclasses alterem a criação do objeto.
+
+Na nossa implementação:
+
+Temos a classe base TicketFactory, que define o método criar_ticket.
+As subclasses, como TicketAdministrativoFactory, TicketManutencaoFactory e TicketTItiFactory, são responsáveis por criar tickets específicos para cada grupo de trabalho.
+O uso do Factory Method permite que, ao longo do sistema, você não precise se preocupar com a criação de objetos diretamente. Em vez disso, você invoca o método da fábrica apropriada, que sabe como criar o objeto correto para o contexto.
+
+Essa abordagem facilita a manutenção do código e permite a expansão da criação de tickets para outros grupos sem afetar outras partes do sistema.
+
+Resumo
+Chain of Responsibility permite passar a responsabilidade de tratar um ticket entre diferentes classes de suporte, onde cada classe decide se pode tratar ou não o ticket.
+Factory Method permite a criação de tickets específicos de acordo com o grupo de trabalho, sem que o código principal precise saber como o objeto é criado, tornando o sistema mais flexível.
+Esses padrões juntos tornam o sistema de tickets mais modular e fácil de estender ou modificar. Por exemplo, para adicionar um novo tipo de suporte, basta criar um novo handler e adicionar na cadeia. Para adicionar outro tipo de ticket, basta criar uma nova fábrica.
+
+
+
+
+
+
