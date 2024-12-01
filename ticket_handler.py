@@ -6,11 +6,13 @@ class Handler:
         self.proximo = handler
 
     def tratar(self, ticket):
-        if self.pode_tratar(ticket):
-            print(f"Ticket {ticket.numero} tratado pelo Suporte {ticket.grupo}.")
-            ticket.status = "Em Processo"
-        elif self.proximo:
-            self.proximo.tratar(ticket)
+        # Só deve tratar tickets com status "Aberto"
+        if ticket.status == "Aberto":
+            if self.pode_tratar(ticket):
+                print(f"Ticket {ticket.numero} tratado pelo Suporte {ticket.grupo}.")
+                ticket.status = "Em Processo"  # Avança para "Em Processo"
+            elif self.proximo:
+                self.proximo.tratar(ticket)
 
     def pode_tratar(self, ticket):
         return False

@@ -9,7 +9,7 @@ class SistemaTickets:
         self.tickets = []
         self.usuario_logado = None
 
-        # Instanciando fábricas e handlers
+        # Instanciando fábricas
         self.fabricas = {
             "Administrativo": TicketAdministrativoFactory(),
             "Manutenção": TicketManutencaoFactory(),
@@ -41,10 +41,6 @@ class SistemaTickets:
             print("Usuário ou senha incorretos.")
 
     def criar_ticket(self):
-        if not self.usuario_logado:
-            print("É necessário fazer login para criar tickets.")
-            return
-
         titulo = input("Título do ticket: ")
         descricao = input("Descrição do ticket: ")
         grupo = self.selecionar_opcao("grupo", ["Administrativo", "Manutenção", "TI"])
@@ -54,13 +50,12 @@ class SistemaTickets:
         ticket = fabrica.criar_ticket(titulo, descricao, self.usuario_logado, grupo, prioridade)
         self.tickets.append(ticket)
 
+        # Enviar o ticket para o handler apropriado
+        self.handlers.tratar(ticket)
+
         print(f"Ticket criado com sucesso! Número: {ticket.numero} - {ticket.titulo}")
 
     def alterar_status_ticket(self):
-        if not self.usuario_logado:
-            print("É necessário fazer login para alterar status de tickets.")
-            return
-
         numero_ticket = input("Número do ticket: ")
         ticket = next((t for t in self.tickets if t.numero == int(numero_ticket) and t.solicitante == self.usuario_logado), None)
 
@@ -68,10 +63,23 @@ class SistemaTickets:
             print("Ticket não encontrado ou você não é o solicitante.")
             return
 
-        novo_status = self.definir_novo_status(ticket)
-        if novo_status:
-            ticket.status = novo_status
-            print(f"Status do ticket {ticket.numero} alterado para {novo_status}.")
+        # Alterar o status do ticket
+        if ticket.status == "Aberto":
+            print(f"Ticket {ticket.numero} está 'Aberto'. Deseja avançar para 'Em Processo'? (s/n)")
+            if input().lower() == "s":
+                ticket.status = "Em Processo"
+                print(f"Status do Ticket {ticket.numero} alterado para 'Em Processo'.")
+            else:
+                print("Status não alterado.")
+        elif ticket.status == "Em Processo":
+            print(f"Ticket {ticket.numero} está 'Em Processo'. Deseja encerrar o ticket? (s/n)")
+            if input().lower() == "s":
+                ticket.status = "Encerrado"
+                print(f"Ticket {ticket.numero} encerrado.")
+            else:
+                print("Status não alterado.")
+        else:
+            print("Status do ticket não pode ser alterado.")
 
     def menu(self):
         opcoes = {
@@ -196,6 +204,9 @@ class SistemaTickets:
             print("Escolha inválida.")
 
     def definir_novo_status(self, ticket):
+        if ticket.status == "Aberto":
+            return None
+
         status_map = {
             "Aberto": "Em Processo",
             "Em Processo": "Encerrado",
