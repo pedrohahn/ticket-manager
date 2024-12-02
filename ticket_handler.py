@@ -20,6 +20,10 @@ class Handler:
 
     def pode_tratar(self, ticket):
         return False
+    
+    def definir_sla(self, ticket, horas):
+        ticket.sla = f"{horas} horas"
+        ticket.data_limite = datetime.now() + timedelta(hours=horas)
 
 
 class SuporteAdministrativo(Handler):
@@ -33,10 +37,6 @@ class SuporteAdministrativo(Handler):
         elif self.proximo:
             self.proximo.tratar(ticket)
 
-    def definir_sla(self, ticket, horas):
-        ticket.sla = f"{horas} horas"
-        ticket.data_limite = datetime.now() + timedelta(hours=horas)
-
 
 class SuporteManutencao(Handler):
     def pode_tratar(self, ticket):
@@ -49,10 +49,6 @@ class SuporteManutencao(Handler):
         elif self.proximo:
             self.proximo.tratar(ticket)
 
-    def definir_sla(self, ticket, horas):
-        ticket.sla = f"{horas} horas"
-        ticket.data_limite = datetime.now() + timedelta(hours=horas)
-
 class SuporteTI(Handler):
     def pode_tratar(self, ticket):
         return ticket.grupo == "TI"
@@ -64,7 +60,3 @@ class SuporteTI(Handler):
             self.definir_sla(ticket, sla_horas)
         elif self.proximo:
             self.proximo.tratar(ticket)
-
-    def definir_sla(self, ticket, horas):
-        ticket.sla = f"{horas} horas"
-        ticket.data_limite = datetime.now() + timedelta(hours=horas)
