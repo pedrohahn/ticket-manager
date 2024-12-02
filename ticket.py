@@ -1,5 +1,7 @@
 # ticket.py
 
+from datetime import datetime, timedelta
+
 class Ticket:
     _contador = 0
 
@@ -13,12 +15,15 @@ class Ticket:
         self.prioridade = prioridade
         self.executor = executor
         self.status = "Aberto"
+        self.sla = None
+        self.data_limite = None
 
     def __str__(self):
         return (f"{self.numero} - {self.titulo} \n"
                 f"Status: {self.status}, Grupo: {self.grupo}, "
                 f"Prioridade: {self.prioridade}, "
-                f"Executor: {self.executor} \n"
+                f"Executor: {self.executor}, "
+                f"SLA: {self.sla}, Data Limite: {self.data_limite}\n"
                 f"Descrição: {self.descricao} ")
 
 
