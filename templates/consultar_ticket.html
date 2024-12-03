@@ -27,12 +27,22 @@
                                     <th scope="col">Número</th>
                                     <th scope="col">Título</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Grupo</th>
                                     <th scope="col">Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for ticket in tickets %}
-                                <tr>
+                                <tr   //light
+                                {% if ticket.prioridade == 'Baixa' %}
+                                     class="table-light"
+                                {% elif ticket.prioridade == 'Média' %}
+                                     class="table-secondary"
+                                {% elif ticket.prioridade == 'Alta' %}
+                                     class="table-warning"
+                                {% elif ticket.prioridade == 'Urgente' %}
+                                     class="table-danger"
+                                {% endif %}>
                                     <td>{{ ticket.numero }}</td>
                                     <td>{{ ticket.titulo }}</td>
                                     <td>
@@ -47,6 +57,7 @@
                                             <span class="badge badge-dark">{{ ticket.status }}</span>
                                         {% endif %}
                                     </td>
+                                    <td>{{ ticket.grupo }}</td>
                                     <td><a href="{{ url_for('alterar_status', numero=ticket.numero) }}" class="btn btn-dark btn-sm">Alterar Status</a></td>
                                 </tr>
                                 {% endfor %}
