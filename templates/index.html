@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tickets</title>
+    <!-- Link do Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa;">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Sistema de Tickets</h2>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">Bem-vindo ao Sistema de Tickets</h3>
+
+                        {% if 'usuario_logado' in session %}
+                        <div class="alert alert-info" role="alert">
+                            Olá, {{ session['usuario_logado'] }}! <a href="{{ url_for('logout') }}" class="alert-link">Sair</a>
+                        </div>
+                        {% endif %}
+
+                        <nav>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <a href="{{ url_for('criar_ticket') }}" class="btn btn-primary btn-block">Criar Ticket</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="{{ url_for('consultar_ticket') }}" class="btn btn-secondary btn-block">Consultar Tickets</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
