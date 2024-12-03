@@ -14,7 +14,8 @@ class Handler:
         if ticket.status == "Aberto":
             if self.pode_tratar(ticket):
                 print(f"Ticket {ticket.numero} tratado pelo Suporte {ticket.grupo}.")
-                ticket.status = "Em Processo"  # Avança para "Em Processo"
+                ticket.status = "Em Processo"  
+                print(f"Ticket {ticket.numero} tratado pelo Suporte {ticket.grupo}.")
             elif self.proximo:
                 self.proximo.tratar(ticket)
 

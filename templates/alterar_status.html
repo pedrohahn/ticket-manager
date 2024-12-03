@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Status do Ticket</title>
+    <!-- Link do Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa;">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Alterar Status do Ticket #{{ ticket.numero }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulário para Alterar Status -->
+                        <form action="{{ url_for('alterar_status', numero=ticket.numero) }}" method="POST">
+                            <div class="form-group">
+                                <label for="status">Novo Status:</label>
+                                <select name="status" id="status" class="form-control" required>
+                                    <option value="Aberto" {% if ticket.status == 'Aberto' %}selected{% endif %}>Aberto</option>
+                                    <option value="Em Processo" {% if ticket.status == 'Em Processo' %}selected{% endif %}>Em Processo</option>
+                                    <option value="Encerrado" {% if ticket.status == 'Encerrado' %}selected{% endif %}>Encerrado</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Alterar Status</button>
+                        </form>
+
+                        <!-- Botão para Voltar à Tela Inicial -->
+                        <a href="{{ url_for('consultar_ticket') }}" class="btn btn-secondary btn-block mt-3">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
